@@ -16,7 +16,7 @@ To configure the VPN connection on an iOS device, follow these steps:
 8. Select the VPN connection that you just created, tap the switch on the top of the page, and you'll be connected.
 
 
-
+...
 
 
 ### Connecting from macOS
@@ -38,7 +38,7 @@ Now that the certificate is important and trusted, configure the VPN connection 
 Finally, click on **Connect** to connect to the VPN. You should now be connected to the VPN.
 
 
-
+...
 
 
 ### Connecting from Windows
