@@ -7,9 +7,9 @@
 
 check ()
 {
-	[[ $(id -u) -eq 0 ]] || echo "Please re-run as root" && exit
+	[[ $(id -u) -eq 0 ]] || EXIT "Please re-run as root"
 	ID=$(awk -F"=" '/^ID=/ {print $2}' /etc/os-release | sed 's/"//g')
-	[[ $ID != ubuntu ]] || echo "Please Run This Scrip In UBUNTU" && exit
+	[[ $ID != ubuntu ]] || EXIT "Please Run This Scrip In UBUNTU"
 }
 install ()
 {
@@ -133,6 +133,11 @@ sysctl ()
 {
 	echo -e "net.ipv4.ip_forward = 1\nnet.ipv4.conf.all.accept_redirects = 0\nnet.ipv4.conf.all.send_redirects = 0\nnet.ipv4.ip_no_pmtu_disc = 1" >> /etc/sysctl.conf
 	echo "Please Restart your system"
+}
+EXIT ()
+{
+  echo $1
+  exit 1
 }
 
 ##############################
