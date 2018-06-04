@@ -68,7 +68,7 @@ Then configure the VPN with these steps:
 Your new VPN connection will be visible under the list of networks. Select the VPN and click **Connect**. You'll be prompted for your username and password. Type them in, click **OK**, and you'll be connected.
 
 
-### Users
+## Users
 
 To add or change VPN users, it's:
 
