@@ -32,6 +32,7 @@ Certificate_VPNServer ()
 {
 	# Step 3 — Generating a Certificate for the VPN Server
 	ipsec pki --gen --type rsa --size 4096 --outform pem > vpn-server-key.pem
+	
 	ipsec pki --pub --in vpn-server-key.pem \
 	--type rsa | ipsec pki --issue --lifetime 1827 \
 	--cacert server-root-ca.pem \
@@ -40,6 +41,7 @@ Certificate_VPNServer ()
 	--san $ip \
 	--flag serverAuth --flag ikeIntermediate \
 	--outform pem > vpn-server-cert.pem
+	
 	cp vpn-server-cert.pem /etc/ipsec.d/certs/vpn-server-cert.pem
 	cp vpn-server-key.pem /etc/ipsec.d/private/vpn-server-key.pem
 	chown root /etc/ipsec.d/private/vpn-server-key.pem
@@ -50,7 +52,7 @@ StrongSwan ()
 {
 	# Step 4 — Configuring StrongSwan
 	cp /etc/ipsec.conf /etc/ipsec.conf.original
-	echo '' | sudo tee /etc/ipsec.conf
+	
 	# When configuring the server ID (leftid), only include the @ character if your VPN server will be identified by a domain name:
 	#   leftid=@vpn.example.com
 	# If the server will be identified by its IP address, just put the IP address in:
@@ -102,8 +104,9 @@ Firewall ()
 			iptables -F
 			iptables -Z
 		fi
-		iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
 		read -p "Please Insert Your SSH Port: " ssh
+		
+		iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
 		iptables -A INPUT -p tcp --dport $ssh -j ACCEPT
 		iptables -A INPUT -i lo -j ACCEPT
 		iptables -A INPUT -p udp --dport  500 -j ACCEPT
@@ -115,6 +118,7 @@ Firewall ()
 		iptables -t mangle -A FORWARD --match policy --pol ipsec --dir in -s 10.10.10.10/24 -o $interface -p tcp -m tcp --tcp-flags SYN,RST SYN -m tcpmss --mss 1361:1536 -j TCPMSS --set-mss 1360
 		iptables -A INPUT -j DROP
 		iptables -A FORWARD -j DROP
+		
 		netfilter-persistent save
 		netfilter-persistent reload
 	fi
