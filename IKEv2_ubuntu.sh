@@ -5,6 +5,14 @@
 ########## Functions #########
 ##############################
 
+check ()
+{
+	ID=$(awk -F"=" '/^ID=/ {print $2}' /etc/os-release | sed 's/"//g')
+	if [ $ID != ubuntu ];then
+		echo "Please Run This Scrip In UBUNTU"
+		exit
+	fi
+}
 install ()
 {
 	# Step 1 — Installing StrongSwan
@@ -133,6 +141,7 @@ sysctl ()
 ############ Main ############
 ##############################
 
+check
 Read
 install
 mkdir /etc/vpn-certs
