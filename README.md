@@ -16,20 +16,28 @@ To configure the VPN connection on an iOS device, follow these steps:
 8. Select the VPN connection that you just created, tap the switch on the top of the page, and you'll be connected.
 
 
+
+
+
 ### Connecting from macOS
 
 Follow these steps to import the certificate:
 
-Double-click the certificate file. Keychain Access will pop up with a dialog that says "Keychain Access is trying to modify the system keychain. Enter your password to allow this."
-Enter your password, then click on Modify Keychain
-Double-click the newly imported VPN certificate. This brings up a small properties window where you can specify the trust levels. Set IP Security (IPSec) to Always Trust and you'll be prompted for your password again. This setting saves automatically after entering the password.
+1. Double-click the certificate file. **Keychain Access** will pop up with a dialog that says "Keychain Access is trying to modify the system keychain. Enter your password to allow this."
+2. Enter your password, then click on **Modify Keychain**
+3. Double-click the newly imported VPN certificate. This brings up a small properties window where you can specify the trust levels. Set **IP Security (IPSec)** to **Always Trust** and you'll be prompted for your password again. This setting saves automatically after entering the password.
+
 Now that the certificate is important and trusted, configure the VPN connection with these steps:
 
-Go to System Preferences and choose Network.
-Click on the small "plus" button on the lower-left of the list of networks.
-In the popup that appears, Set Interface to VPN, set the VPN Type to IKEv2, and give the connection a name.
-In the Server and Remote ID field, enter the server's domain name or IP address. Leave the Local ID blank.
-Click on Authentication Settings, select Username, and enter your username and password you configured for your VPN user. Then click OK.
+1. Go to **System Preferences** and choose **Network**.
+2. Click on the small "plus" button on the lower-left of the list of networks.
+3. In the popup that appears, Set **Interface** to **VPN**, set the **VPN Type** to **IKEv2**, and give the connection a name.
+4. In the **Server** and **Remote ID** field, enter the server's domain name or IP address. Leave the **Local ID** blank.
+5. Click on **Authentication Settings**, select **Username**, and enter your username and password you configured for your VPN user. Then click **OK**.
+
+
+
+
 
 ### Connecting from Windows
 
