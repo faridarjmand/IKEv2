@@ -7,11 +7,9 @@
 
 check ()
 {
+	[[ $(id -u) -eq 0 ]] || echo "Please re-run as root" && exit
 	ID=$(awk -F"=" '/^ID=/ {print $2}' /etc/os-release | sed 's/"//g')
-	if [ $ID != ubuntu ];then
-		echo "Please Run This Scrip In UBUNTU"
-		exit
-	fi
+	[[ $ID != ubuntu ]] || echo "Please Run This Scrip In UBUNTU" && exit
 }
 install ()
 {
