@@ -14,14 +14,17 @@ check ()
 install ()
 {
 	# Step 1 — Installing StrongSwan
-	apt-get install strongswan strongswan-plugin-eap-mschapv2 moreutils iptables-persistent
+	apt-get install -y strongswan strongswan-plugin-eap-mschapv2 moreutils iptables-persistent \
+	libstrongswan-standard-plugins strongswan-libcharon libcharon-standard-plugins libcharon-extra-plugins certbot
 }
 Read ()
 {
-	read -p "Please Enter Your IP: " ip
+	read -p "Please Enter Your IP (default = `ip route get 8.8.8.8 | awk '{printf $7}'`): " ip
+	ip=${ip:-`ip route get 8.8.8.8 | awk '{printf $7}'`}
 	read -p "Please Insert Your VPN Username: " user
 	read -p "Please Insert Your VPN Password: " pass
-	read -p "Please Enter Your Interface:(eth0) " interface
+	read -p "Please Enter Your Interface (default = `ip route get 8.8.8.8 | awk '{printf $5}'`): " interface
+	interface=${interface:-`ip route get 8.8.8.8 | awk '{printf $5}'`}
 }
 Certificate_Authority () 
 {
@@ -96,6 +99,9 @@ IpSec ()
 	# Step 5 — Configuring VPN Authentication
 	echo -e "$ip : RSA \"/etc/ipsec.d/private/vpn-server-key.pem\"\n$user %any% : EAP \"$pass\"" > /etc/ipsec.secrets
 	ipsec reload
+	id -u $user &>/dev/null || adduser --disabled-password --gecos "" $user
+	echo "$user:$pass" | chpasswd
+	adduser $user sudo
 }
 Firewall ()
 {
@@ -103,6 +109,7 @@ Firewall ()
 	read -p "Do You Want To Set iptables and disable ufw ?(y/n): " iptables
 	if [ $iptables == y ];then
 		read -p "Do You Want To Remove Curent iptables Roll ?(y/n): " remove
+		remove=${remove:-'n'}
 		if [ $remove == y ];then
 			ufw disable
 			iptables -P INPUT ACCEPT
@@ -110,18 +117,31 @@ Firewall ()
 			iptables -F
 			iptables -Z
 		fi
-		read -p "Please Insert Your SSH Port: " ssh
-		
+		read -p "Please Insert Your SSH Port (default: 22): " sshport
+		sshport=${sshport:-22}
+		# accept anything already accepted
 		iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
-		iptables -A INPUT -p tcp --dport $ssh -j ACCEPT
+		# accept SSH
+		iptables -A INPUT -p tcp --dport $sshport -j ACCEPT
+		# accept anything on the loopback interface
 		iptables -A INPUT -i lo -j ACCEPT
+		# accept IPSec/NAT-T for VPN (ESP not needed with forceencaps, as ESP goes inside UDP)
 		iptables -A INPUT -p udp --dport  500 -j ACCEPT
 		iptables -A INPUT -p udp --dport 4500 -j ACCEPT
+		# forward VPN traffic anywhere
 		iptables -A FORWARD --match policy --pol ipsec --dir in  --proto esp -s 10.10.10.10/24 -j ACCEPT
 		iptables -A FORWARD --match policy --pol ipsec --dir out --proto esp -d 10.10.10.10/24 -j ACCEPT
+		# rate-limit repeated new requests from same IP to any ports
+		iptables -I INPUT -i $interface -m state --state NEW -m recent --set
+		iptables -I INPUT -i $interface -m state --state NEW -m recent --update --seconds 60 --hitcount 12 -j DROP
+		# masquerade VPN traffic over eth0 etc.
 		iptables -t nat -A POSTROUTING -s 10.10.10.10/24 -o $interface -m policy --pol ipsec --dir out -j ACCEPT
 		iptables -t nat -A POSTROUTING -s 10.10.10.10/24 -o $interface -j MASQUERADE
+		# reduce MTU/MSS values for dumb VPN clients
 		iptables -t mangle -A FORWARD --match policy --pol ipsec --dir in -s 10.10.10.10/24 -o $interface -p tcp -m tcp --tcp-flags SYN,RST SYN -m tcpmss --mss 1361:1536 -j TCPMSS --set-mss 1360
+		# drop invalid packets
+		iptables -A INPUT -m state --state INVALID -j DROP
+		# fall through to drop any other input and forward traffic
 		iptables -A INPUT -j DROP
 		iptables -A FORWARD -j DROP
 		
@@ -131,8 +151,16 @@ Firewall ()
 }
 sysctl ()
 {
-	echo -e "net.ipv4.ip_forward = 1\nnet.ipv4.conf.all.accept_redirects = 0\nnet.ipv4.conf.all.send_redirects = 0\nnet.ipv4.ip_no_pmtu_disc = 1" >> /etc/sysctl.conf
+	echo -e "net.ipv4.ip_forward = 1" \
+	"\nnet.ipv4.conf.all.accept_redirects = 0" \
+	"\nnet.ipv4.conf.all.send_redirects = 0" \
+	"\nnet.ipv4.conf.all.rp_filter = 1" \
+	"\nnet.ipv4.ip_no_pmtu_disc = 1" \
+	"\nnet.ipv6.conf.all.disable_ipv6 = 1" \
+	"\nnet.ipv6.conf.default.disable_ipv6 = 1" \
+	"\nnet.ipv6.conf.lo.disable_ipv6 = 1" >> /etc/sysctl.conf
 	echo "Please Restart your system"
+	sysctl -p
 }
 EXIT ()
 {
