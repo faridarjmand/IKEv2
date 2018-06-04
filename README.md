@@ -5,16 +5,16 @@
 ### Connecting from iOS
 
 To configure the VPN connection on an iOS device, follow these steps:
-``` sh
-Send yourself an email with the root certificate attached.
-Open the email on your iOS device and tap on the attached certificate file, then tap Install and enter your passcode. Once it installs, tap Done.
-Go to Settings, General, VPN and tap Add VPN Configuration. This will bring up the VPN connection configuration screen.
-Tap on Type and select IKEv2.
-In the Description field, enter a short name for the VPN connection. This could be anything you like.
-In the Server and Remote ID field, enter the server's domain name or IP address. The Local ID field can be left blank.
-Enter your username and password in the Authentication section, then tap Done.
-Select the VPN connection that you just created, tap the switch on the top of the page, and you'll be connected.
-```
+
+1. Send yourself an email with the root certificate attached.
+2. Open the email on your iOS device and tap on the attached certificate file, then tap **Install** and enter your passcode. Once it installs, tap **Done**.
+3. Go to **Settings**, **General**, **VPN** and tap **Add VPN Configuration**. This will bring up the VPN connection configuration screen.
+4. Tap on **Type** and select **IKEv2**.
+5. In the **Description** field, enter a short name for the VPN connection. This could be anything you like.
+6. In the **Server** and **Remote ID** field, enter the server's domain name or IP address. The **Local ID** field can be left blank.
+7. Enter your username and password in the **Authentication** section, then tap **Done**.
+8. Select the VPN connection that you just created, tap the switch on the top of the page, and you'll be connected.
+
 
 ### Connecting from macOS
 
