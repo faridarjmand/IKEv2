@@ -35,7 +35,7 @@ Now that the certificate is important and trusted, configure the VPN connection 
 4. In the **Server** and **Remote ID** field, enter the server's domain name or IP address. Leave the **Local ID** blank.
 5. Click on **Authentication Settings**, select **Username**, and enter your username and password you configured for your VPN user. Then click **OK**.
 
-Finally, click on Connect to connect to the VPN. You should now be connected to the VPN.
+Finally, click on **Connect** to connect to the VPN. You should now be connected to the VPN.
 
 
 
@@ -45,22 +45,24 @@ Finally, click on Connect to connect to the VPN. You should now be connected to 
 
 First, import the root certificate by following these steps:
 
-1. Press ```WINDOWS+R``` to bring up the Run dialog, and enter ```mmc.exe``` to launch the Windows Management Console.
-2. From the File menu, navigate to Add or Remove Snap-in, select Certificates from the list of available snap-ins, and click Add.
-3. We want the VPN to work with any user, so select Computer Account and click Next.
-4. We're configuring things on the local computer, so select Local Computer, then click Finish.
-5. Under the Console Root node, expand the Certificates (Local Computer) entry, expand Trusted Root Certification Authorities, and then select the Certificates entry:
+1. Press ```WINDOWS+R``` to bring up the **Run** dialog, and enter ```mmc.exe``` to launch the Windows Management Console.
+2. From the **File** menu, navigate to **Add or Remove Snap-in**, select **Certificates** from the list of available snap-ins, and click **Add**.
+3. We want the VPN to work with any user, so select **Computer Account** and click **Next**.
+4. We're configuring things on the local computer, so select **Local Computer**, then click **Finish**.
+5. Under the **Console Root** node, expand the **Certificates (Local Computer)** entry, expand **Trusted Root Certification Authorities**, and then select the **Certificates** entry:
 
-6. From the Action menu, select All Tasks and click Import to display the Certificate Import Wizard. Click Next to move past the introduction.
-7. On the File to Import screen, press the Browse button and select the certificate file that you've saved. Then click Next.
-8. Ensure that the Certificate Store is set to Trusted Root Certification Authorities, and click Next.
-9. Click Finish to import the certificate.
+![Certificates view](https://assets.digitalocean.com/articles/ikevpn_ubuntu_1604/4PN0vT6.png)
+
+6. From the **Action** menu, select **All Tasks** and click **Import** to display the Certificate Import Wizard. Click **Next** to move past the introduction.
+7. On the **File to Import** screen, press the **Browse** button and select the certificate file that you've saved. Then click **Next**.
+8. Ensure that the **Certificate Store** is set to **Trusted Root Certification Authorities**, and click **Next**.
+9. Click **Finish** to import the certificate.
 
 Then configure the VPN with these steps:
 
-1. Launch Control Panel, then navigate to the Network and Sharing Center.
-2. Click on Set up a new connection or network, then select Connect to a workplace.
-3. Select Use my Internet connection (VPN).
-4. Enter the VPN server details. Enter the server's domain name or IP address in the Internet address field, then fill in Destination name with something that describes your VPN connection. Then click Done.
+1. Launch **Control Panel**, then navigate to the **Network and Sharing Center**.
+2. Click on **Set up a new connection or network**, then select **Connect to a workplace**.
+3. Select **Use my Internet connection (VPN)**.
+4. Enter the VPN server details. Enter the server's domain name or IP address in the **Internet address** field, then fill in **Destination name** with something that describes your VPN connection. Then click **Done**.
 
-Your new VPN connection will be visible under the list of networks. Select the VPN and click Connect. You'll be prompted for your username and password. Type them in, click OK, and you'll be connected.
+Your new VPN connection will be visible under the list of networks. Select the VPN and click **Connect**. You'll be prompted for your username and password. Type them in, click **OK**, and you'll be connected.
