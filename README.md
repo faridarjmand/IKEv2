@@ -14,7 +14,8 @@ In the Description field, enter a short name for the VPN connection. This could 
 In the Server and Remote ID field, enter the server's domain name or IP address. The Local ID field can be left blank.
 Enter your username and password in the Authentication section, then tap Done.
 Select the VPN connection that you just created, tap the switch on the top of the page, and you'll be connected.
-Connecting from macOS
+
+### Connecting from macOS
 
 Follow these steps to import the certificate:
 
@@ -29,7 +30,7 @@ In the popup that appears, Set Interface to VPN, set the VPN Type to IKEv2, and 
 In the Server and Remote ID field, enter the server's domain name or IP address. Leave the Local ID blank.
 Click on Authentication Settings, select Username, and enter your username and password you configured for your VPN user. Then click OK.
 
-'' Connecting from Windows
+### Connecting from Windows
 
 First, import the root certificate by following these steps:
 
