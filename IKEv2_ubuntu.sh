@@ -57,33 +57,33 @@ StrongSwan ()
 	#   leftid=@vpn.example.com
 	# If the server will be identified by its IP address, just put the IP address in:
 	#   leftid=111.111.111.111
-echo "config setup
-  charondebug="ike 1, knl 1, cfg 0"
-  uniqueids=no
-conn ikev2-vpn
-  auto=add
-  compress=no
-  type=tunnel
-  keyexchange=ikev2
-  fragmentation=yes
-  forceencaps=yes
-  ike=aes256-sha1-modp1024,3des-sha1-modp1024!
-  esp=aes256-sha1,3des-sha1!
-  dpdaction=clear
-  dpddelay=300s
-  rekey=no
-  left=%any
-  leftid=$ip
-  leftcert=/etc/ipsec.d/certs/vpn-server-cert.pem
-  leftsendcert=always
-  leftsubnet=0.0.0.0/0
-  right=%any
-  rightid=%any
-  rightauth=eap-mschapv2
-  rightsourceip=10.10.10.0/24
-  rightdns=8.8.8.8,8.8.4.4
-  rightsendcert=never
-  eap_identity=%identity" >> /etc/ipsec.conf
+	echo -e "config setup" \
+	"\n  charondebug=\"ike 1, knl 1, cfg 0\"" \
+ 	"\n  uniqueids=no" \
+	"\nconn ikev2-vpn" \
+  	"\n  auto=add" \
+  	"\n  compress=no" \
+  	"\n  type=tunnel" \
+  	"\n  keyexchange=ikev2" \
+ 	"\n  fragmentation=yes" \
+	"\n  forceencaps=yes" \
+	"\n  ike=aes256-sha1-modp1024,3des-sha1-modp1024!" \
+	"\n  esp=aes256-sha1,3des-sha1!" \
+  	"\n  dpdaction=clear" \
+  	"\n  dpddelay=300s" \
+	"\n  rekey=no" \
+	"\n  left=%any" \
+	"\n  leftid=$ip" \
+	"\n  leftcert=/etc/ipsec.d/certs/vpn-server-cert.pem" \
+	"\n  leftsendcert=always" \
+	"\n  leftsubnet=0.0.0.0/0" \
+	"\n  right=%any" \
+	"\n  rightid=%any" \
+	"\n  rightauth=eap-mschapv2" \
+ 	"\n  rightsourceip=10.10.10.0/24" \
+ 	"\n  rightdns=8.8.8.8,8.8.4.4" \
+ 	"\n  rightsendcert=never" \
+ 	"\n  eap_identity=%identity" >> /etc/ipsec.conf
 }
 IpSec ()
 {
