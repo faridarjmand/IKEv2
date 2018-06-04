@@ -66,3 +66,18 @@ Then configure the VPN with these steps:
 4. Enter the VPN server details. Enter the server's domain name or IP address in the **Internet address** field, then fill in **Destination name** with something that describes your VPN connection. Then click **Done**.
 
 Your new VPN connection will be visible under the list of networks. Select the VPN and click **Connect**. You'll be prompted for your username and password. Type them in, click **OK**, and you'll be connected.
+
+
+### Users
+
+To add or change VPN users, it's:
+
+    vi /etc/ipsec.secrets
+    
+Edit usernames and passwords as you see fit (but don't touch the first line, which specifies the server certificate). The line format for each user is:
+
+    username %any : EAP "password"
+
+To exit vi it's `ESC` then `SHIFT + :` then `Ctrl + X`, and to have strongSwan pick up the changes it's:
+
+    ipsec secrets
